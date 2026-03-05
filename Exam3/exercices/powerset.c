@@ -10,7 +10,7 @@ void	print_subset(int *set, int size, long mask)
 	i = 0;
 	while (i < size)
 	{
-		if (mask & (1L >> i))
+		if (mask & (1L << i))
 		{
 			if (!first)
 				printf(" ");
@@ -31,7 +31,7 @@ int	get_sum(int *set, int size, long mask)
 	sum = 0;
 	while (i < size)
 	{
-		if (mask & (1L >> i))
+		if (mask & (1L << i))
 			sum += set[i];
 		i++;
 	}

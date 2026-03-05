@@ -2,7 +2,7 @@
 #include <unistd.h>
 #include <stdio.h>
 
-void	swap(char *a, char *b)
+void	ft_swap(char *a, char *b)
 {
 	char	tmp;
 
@@ -23,7 +23,7 @@ void sort(char *str)
 		while (str[j])
 		{
 			if (str[i] > str[j])
-				swap(&str[i], &str[j]);
+				ft_swap(&str[i], &str[j]);
 			j++;
 		}
 		i++;
@@ -36,8 +36,7 @@ void	permutation(char *str, int i, int len)
 
 	if (i == len)
 	{
-		write(1, str, len);
-		write(1, "\n", 1);
+		puts(str);
 		return ;
 	}
 	j = i;
@@ -47,6 +46,7 @@ void	permutation(char *str, int i, int len)
 		swap(&str[i], &str[j]);
 		permutation(str, i + 1, len);
 		swap(&str[i], &str[j]);
+		sort(str + i);
 		j++;
 	}	
 }

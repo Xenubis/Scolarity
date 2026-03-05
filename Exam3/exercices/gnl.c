@@ -4,7 +4,7 @@
 #include <stdio.h>
 
 #ifndef BUFFER_SIZE
-# define BUFFER_SIZE 42
+# define BUFFER_SIZE 10000
 #endif
 
 char *get_next_line(int fd)
@@ -34,12 +34,7 @@ char *get_next_line(int fd)
         if (line[j - 1] == '\n')
             break ;
     }
-    if (j == 0)
-    {
-        free(line);
-        return (NULL);
-    }
-	if (r < 0)
+	if (r < 0 || j == 0)
 	{
 		free(line);
 		return (NULL);
@@ -52,12 +47,14 @@ int	main(void)
 {
 	int		fd;
 	char	*line;
+	int i = 0;
 
 	fd = open("test.txt", O_RDONLY);
-	while ((line = get_next_line(fd)) != NULL)
+	while ((line = get_next_line(fd)) != NULL && i < 2)
 	{
 		printf("%s", line);
 		free(line);
+		i++;
 	}
 	close(fd);
 	return (0);
