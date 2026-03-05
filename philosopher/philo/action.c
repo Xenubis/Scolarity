@@ -6,40 +6,58 @@
 /*   By: mmusquer <mmusquer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/12 15:18:31 by mmusquer          #+#    #+#             */
-/*   Updated: 2026/02/24 13:51:27 by mmusquer         ###   ########.fr       */
+/*   Updated: 2026/03/02 17:18:32 by mmusquer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-void	take_left_fork(t_philo *philo)
+int	take_left_fork(t_philo *philo)
 {
-	pthread_mutex_lock(philo->left_fork);
-	if (is_dead(philo) == 1)
+	while (1)
 	{
-		pthread_mutex_unlock(philo->left_fork);
-		return ;
+		if (is_dead(philo) == 1)
+			return (1);
+		if (pthread_mutex_trylock(philo->left_fork) == 0)
+			break ;
+		ft_usleep(1);
 	}
 	pthread_mutex_lock(&philo->data->print_mutex);
+	if (is_dead(philo) == 1)
+	{
+		pthread_mutex_unlock(&philo->data->print_mutex);
+		pthread_mutex_unlock(philo->left_fork);
+		return (1);
+	}
 	printf("\033[34;01m%ld ms Philosopher %d has taken left fork\033[00m\n",
 		(get_time() - philo->data->starting_time),
 		philo->id);
 	pthread_mutex_unlock(&philo->data->print_mutex);
+	return (0);
 }
 
-void	take_right_fork(t_philo *philo)
+int	take_right_fork(t_philo *philo)
 {
-	pthread_mutex_lock(philo->right_fork);
-	if (is_dead(philo) == 1)
+	while (1)
 	{
-		pthread_mutex_unlock(philo->right_fork);
-		return ;
+		if (is_dead(philo) == 1)
+			return (1);
+		if (pthread_mutex_trylock(philo->right_fork) == 0)
+			break ;
+		ft_usleep(1);
 	}
 	pthread_mutex_lock(&philo->data->print_mutex);
+	if (is_dead(philo) == 1)
+	{
+		pthread_mutex_unlock(&philo->data->print_mutex);
+		pthread_mutex_unlock(philo->right_fork);
+		return (1);
+	}
 	printf("\033[34;01m%ld ms Philosopher %d has taken right fork\033[00m\n",
 		(get_time() - philo->data->starting_time),
 		philo->id);
 	pthread_mutex_unlock(&philo->data->print_mutex);
+	return (0);
 }
 
 void	take_bite(t_philo *philo)
@@ -50,6 +68,11 @@ void	take_bite(t_philo *philo)
 	if (is_dead(philo) == 1)
 		return ;
 	pthread_mutex_lock(&philo->data->print_mutex);
+	if (is_dead(philo) == 1)
+	{
+		pthread_mutex_unlock(&philo->data->print_mutex);
+		return ;
+	}
 	printf("\033[32;01m%ld ms Philosopher %d is eating\033[00m\n", (get_time()
 			- philo->data->starting_time), philo->id);
 	pthread_mutex_unlock(&philo->data->print_mutex);
@@ -61,6 +84,11 @@ void	sleeping(t_philo *philo)
 	if (is_dead(philo) == 1)
 		return ;
 	pthread_mutex_lock(&philo->data->print_mutex);
+	if (is_dead(philo) == 1)
+	{
+		pthread_mutex_unlock(&philo->data->print_mutex);
+		return ;
+	}
 	printf("\033[33;01m%ld ms Philosopher %d is sleeping\033[00m\n", (get_time()
 			- philo->data->starting_time), philo->id);
 	pthread_mutex_unlock(&philo->data->print_mutex);

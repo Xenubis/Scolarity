@@ -6,24 +6,35 @@
 /*   By: mmusquer <mmusquer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 17:20:57 by mmusquer          #+#    #+#             */
-/*   Updated: 2026/02/24 13:50:33 by mmusquer         ###   ########.fr       */
+/*   Updated: 2026/03/02 17:08:00 by mmusquer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "philosopher.h"
 
-static void	fork_habit(t_philo *philo)
+static int	fork_habit(t_philo *philo)
 {
 	if (philo->id % 2 == 0)
 	{
-		take_left_fork(philo);
-		take_right_fork(philo);
+		if (take_left_fork(philo) != 0)
+			return (1);
+		if (take_right_fork(philo) != 0)
+		{
+			pthread_mutex_unlock(philo->left_fork);
+			return (1);
+		}
 	}
 	else
 	{
-		take_right_fork(philo);
-		take_left_fork(philo);
+		if (take_right_fork(philo) != 0)
+			return (1);
+		if (take_left_fork(philo) != 0)
+		{
+			pthread_mutex_unlock(philo->right_fork);
+			return (1);
+		}
 	}
+	return (0);
 }
 
 static void	do_habit(t_philo *philo)
@@ -79,7 +90,10 @@ void	*habit(void *arg)
 	check_delay_time(philo);
 	while (lock_nb_bite(philo) != lock_nb_bite_need(philo) && !is_dead(philo))
 	{
-		fork_habit(philo);
+		if (fork_habit(philo) != 0)
+		{
+			return (NULL);
+		}
 		if (is_dead(philo) == 1)
 		{
 			put_down_fork(philo);

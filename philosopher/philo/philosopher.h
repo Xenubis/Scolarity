@@ -6,7 +6,7 @@
 /*   By: mmusquer <mmusquer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 14:45:21 by mmusquer          #+#    #+#             */
-/*   Updated: 2026/02/19 17:56:23 by mmusquer         ###   ########.fr       */
+/*   Updated: 2026/03/02 16:43:43 by mmusquer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,8 +72,8 @@ void				init_philo(t_data *data);
 
 void				*habit(void *args);
 void				think(t_philo *philo);
-void				take_left_fork(t_philo *philo);
-void				take_right_fork(t_philo *philo);
+int					take_left_fork(t_philo *philo);
+int					take_right_fork(t_philo *philo);
 void				take_bite(t_philo *philo);
 void				sleeping(t_philo *philo);
 void				put_down_fork(t_philo *philo);

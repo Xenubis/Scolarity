@@ -6,7 +6,7 @@
 /*   By: mmusquer <mmusquer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/04 14:45:06 by mmusquer          #+#    #+#             */
-/*   Updated: 2026/02/23 18:12:14 by mmusquer         ###   ########.fr       */
+/*   Updated: 2026/03/02 13:09:35 by mmusquer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ void	destroy_semaphore(t_data *data)
 
 void	end_fork(t_philo *philo)
 {
-	pthread_join(philo->thread, NULL);
 	sem_close(philo->data->bite);
 	sem_close(philo->data->death);
 	sem_close(philo->data->fork);

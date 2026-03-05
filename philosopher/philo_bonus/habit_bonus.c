@@ -6,7 +6,7 @@
 /*   By: mmusquer <mmusquer@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/02/09 17:20:57 by mmusquer          #+#    #+#             */
-/*   Updated: 2026/02/23 18:21:16 by mmusquer         ###   ########.fr       */
+/*   Updated: 2026/03/03 11:42:30 by mmusquer         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,13 @@ void	*grim_reaper(void *args)
 			sem_wait(philo->data->print);
 			printf("\033[31;01m%ld ms Philosopher %d is dead\033[00m\n",
 				(get_time() - philo->data->starting_time), philo->id);
-			sem_wait(philo->data->death);
-			philo->he_dead = 1;
-			sem_post(philo->data->death);
-			sem_post(philo->data->bite);
-			sem_post(philo->data->sit);
-			sem_post(philo->data->fork);
-			break ;
+			sem_close(philo->data->bite);
+			sem_close(philo->data->death);
+			sem_close(philo->data->fork);
+			sem_close(philo->data->print);
+			sem_close(philo->data->sit);
+			free(philo->data->philos);
+			exit(1);
 		}
 		ft_usleep(2);
 	}
@@ -66,14 +66,10 @@ void	*grim_reaper(void *args)
 void	habit(t_philo *philo)
 {
 	pthread_create(&philo->thread, NULL, grim_reaper, philo);
+	pthread_detach(philo->thread);
 	check_delay_time(philo);
 	while (1)
 	{
-		if (is_dead(philo) == 1)
-		{
-			end_fork(philo);
-			exit(1);
-		}
 		sem_wait(philo->data->sit);
 		fork_to_bite(philo);
 		sem_post(philo->data->sit);
