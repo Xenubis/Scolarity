@@ -1,0 +1,21 @@
+NO ./sprites/path_to_the_north_texture.xpm
+SO ./sprites/path_to_the_south_texture.xpm
+WE ./sprites/path_to_the_west_texture.xpm
+EA ./sprites/path_to_the_east_texture.xpm
+
+F 42,42,42
+C 20,20,20
+
+        11111111
+        10R00001
+    11111D111D1111
+    100000000R0011
+11111011110110001
+1000000000000R001
+1011111011110001
+1010001000001111
+1010R01D11111
+101000101N001
+10111D1000001
+1000001111111
+1111111

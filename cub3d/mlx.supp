@@ -1,0 +1,145 @@
+##############################################################################
+## Fichier de suppression Valgrind pour la MiniLibX (mlx) + X11 / XCB       ##
+##																			##
+## Utilisation :															##
+##   valgrind --leak-check=full --show-leak-kinds=all \						##
+##            --suppressions=mlx.supp ./cub3D maps/map.cub					##
+##############################################################################
+
+# writev
+
+{
+   mlx_xcb_writev_param
+   Memcheck:Param
+   writev(vector[0])
+   fun:writev
+   ...
+}
+
+{
+   mlx_xcb_pwritev_param
+   Memcheck:Param
+   pwritev(vector[0])
+   ...
+   fun:*xcb*
+   ...
+}
+
+# XCB
+
+{
+   mlx_xcb_value8
+   Memcheck:Value8
+   ...
+   fun:_xcb_conn_wait*
+   ...
+}
+{
+   mlx_xcb_cond
+   Memcheck:Cond
+   ...
+   fun:_xcb_conn_wait*
+   ...
+}
+
+
+# xlib
+
+{
+   mlx_xlib_reachable_xopendisplay
+   Memcheck:Leak
+   match-leak-kinds: reachable,possible
+   ...
+   fun:XOpenDisplay
+   ...
+}
+{
+   mlx_xlib_reachable_locale
+   Memcheck:Leak
+   match-leak-kinds: reachable,possible
+   ...
+   fun:_XlcCreateLC
+   ...
+}
+{
+   mlx_xlib_reachable_locale2
+   Memcheck:Leak
+   match-leak-kinds: reachable,possible
+   ...
+   fun:_XlcDefaultMapModifiers
+   ...
+}
+{
+   mlx_xlib_reachable_xrm
+   Memcheck:Leak
+   match-leak-kinds: reachable,possible
+   ...
+   fun:XrmGetStringDatabase
+   ...
+}
+{
+   mlx_xlib_reachable_setlocale
+   Memcheck:Leak
+   match-leak-kinds: reachable,possible
+   ...
+   fun:setlocale
+   ...
+}
+{
+   mlx_xcb_reachable_connect
+   Memcheck:Leak
+   match-leak-kinds: reachable,possible
+   ...
+   fun:xcb_connect*
+   ...
+}
+{
+   mlx_xcb_reachable_generic
+   Memcheck:Leak
+   match-leak-kinds: reachable,possible
+   ...
+   obj:*libxcb*
+   ...
+}
+{
+   mlx_xlib_reachable_generic
+   Memcheck:Leak
+   match-leak-kinds: reachable,possible
+   ...
+   obj:*libX11*
+   ...
+}
+
+# dl
+{
+   dl_open_reachable
+   Memcheck:Leak
+   match-leak-kinds: reachable,possible
+   ...
+   fun:_dl_open
+   ...
+}
+{
+   dlopen_reachable
+   Memcheck:Leak
+   match-leak-kinds: reachable,possible
+   ...
+   fun:dlopen*
+   ...
+}
+{
+   dl_catch_reachable
+   Memcheck:Leak
+   match-leak-kinds: reachable,possible
+   ...
+   fun:_dl_catch_exception
+   ...
+}
+{
+   dl_map_object_reachable
+   Memcheck:Leak
+   match-leak-kinds: reachable,possible
+   ...
+   fun:_dl_map_object
+   ...
+}

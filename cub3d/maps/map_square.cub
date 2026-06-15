@@ -1,0 +1,15 @@
+C 204,229,255
+NO ./sprites/path_to_the_north_texture.xpm
+
+
+
+WE ./sprites/path_to_the_west_texture.xpm
+SO ./sprites/path_to_the_south_texture.xpm
+
+F 100,100,0
+
+EA ./sprites/path_to_the_east_texture.xpm
+
+                             1
+                            1N1
+                             1
